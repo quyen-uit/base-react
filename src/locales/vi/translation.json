@@ -1,0 +1,113 @@
+{
+  "common": {
+    "appName": "Ứng dụng React Claude",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "create": "Tạo mới",
+    "search": "Tìm kiếm",
+    "actions": "Hành động",
+    "confirm": "Xác nhận",
+    "yes": "Có",
+    "no": "Không"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "name": "Tên",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "loginTitle": "Chào mừng trở lại",
+    "loginSubtitle": "Đăng nhập vào tài khoản của bạn",
+    "registerTitle": "Tạo tài khoản",
+    "registerSubtitle": "Đăng ký tài khoản mới",
+    "forgotPassword": "Quên mật khẩu?",
+    "noAccount": "Chưa có tài khoản?",
+    "haveAccount": "Đã có tài khoản?",
+    "loginSuccess": "Đăng nhập thành công!",
+    "registerSuccess": "Đăng ký thành công!",
+    "logoutSuccess": "Đăng xuất thành công",
+    "invalidCredentials": "Email hoặc mật khẩu không hợp lệ"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "products": "Sản phẩm",
+    "settings": "Cài đặt",
+    "profile": "Hồ sơ",
+    "admin": "Quản trị"
+  },
+  "products": {
+    "title": "Sản phẩm",
+    "create": "Tạo sản phẩm",
+    "edit": "Sửa sản phẩm",
+    "delete": "Xóa sản phẩm",
+    "name": "Tên sản phẩm",
+    "description": "Mô tả",
+    "price": "Giá",
+    "category": "Danh mục",
+    "stock": "Tồn kho",
+    "imageUrl": "URL hình ảnh",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa sản phẩm này?",
+    "createSuccess": "Tạo sản phẩm thành công!",
+    "updateSuccess": "Cập nhật sản phẩm thành công!",
+    "deleteSuccess": "Xóa sản phẩm thành công!"
+  },
+  "dashboard": {
+    "welcome": "Chào mừng đến Bảng điều khiển",
+    "stats": {
+      "totalProducts": "Tổng sản phẩm",
+      "totalUsers": "Tổng người dùng",
+      "revenue": "Doanh thu",
+      "orders": "Đơn hàng"
+    }
+  },
+  "home": {
+    "welcome": "Chào mừng đến React Claude App",
+    "subtitle": "Ứng dụng React hiện đại, có khả năng mở rộng với TypeScript và Mantine UI",
+    "getStarted": "Bắt đầu",
+    "features": {
+      "title": "Tính năng",
+      "auth": {
+        "title": "Xác thực",
+        "description": "Hệ thống đăng nhập và đăng ký an toàn"
+      },
+      "rbac": {
+        "title": "Phân quyền",
+        "description": "Quản lý vai trò và quyền người dùng"
+      },
+      "theme": {
+        "title": "Giao diện",
+        "description": "Hỗ trợ chế độ sáng và tối"
+      },
+      "i18n": {
+        "title": "Đa ngôn ngữ",
+        "description": "Hỗ trợ nhiều ngôn ngữ"
+      }
+    }
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "toggle": "Chuyển đổi giao diện"
+  },
+  "language": {
+    "select": "Chọn ngôn ngữ",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  },
+  "errors": {
+    "notFound": "Không tìm thấy trang",
+    "unauthorized": "Bạn không có quyền truy cập trang này",
+    "serverError": "Lỗi máy chủ",
+    "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối."
+  }
+}
