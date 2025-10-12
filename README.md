@@ -4,7 +4,7 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 
 ## Features
 
-- **Authentication**: Secure login and registration system
+- **Authentication**: Secure login and registration system with refresh tokens
 - **Role-Based Access Control (RBAC)**: Manage user roles and permissions
 - **Admin Dashboard**: Protected admin panel with dedicated layout
 - **Client Interface**: Public and protected user-facing pages
@@ -13,8 +13,11 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 - **Product CRUD**: Full Create, Read, Update, Delete operations for products
 - **State Management**: Redux Toolkit with RTK Query for API calls
 - **Form Validation**: Zod schema validation with React Hook Form
-- **Error Handling**: Global error boundary and toast notifications
+- **Error Handling**: Global error boundary with Sentry integration
 - **TypeScript**: Full type safety across the application
+- **Testing**: Comprehensive test suite with Vitest
+- **Security**: Production-ready security headers and CSP
+- **Performance**: Code splitting, caching, and optimization
 
 ## Tech Stack
 
@@ -52,6 +55,16 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 - **Prettier** - Code formatting
 - **Husky** - Git hooks
 - **lint-staged** - Run linters on staged files
+
+### Testing
+- **Vitest** - Unit and integration testing
+- **React Testing Library** - Component testing
+- **jsdom** - DOM simulation for tests
+
+### Security & Monitoring
+- **Sentry** - Error tracking and performance monitoring
+- **axios-retry** - Automatic request retries
+- **Encrypted Storage** - Secure token storage
 
 ## Project Structure
 
@@ -169,6 +182,60 @@ Format code:
 npm run format
 ```
 
+### Testing
+
+Run tests in watch mode:
+```bash
+npm test
+```
+
+Run tests once (CI):
+```bash
+npm run test:run
+```
+
+Run tests with UI:
+```bash
+npm run test:ui
+```
+
+Generate coverage report:
+```bash
+npm run test:coverage
+```
+
+For detailed testing documentation, see [TESTING.md](./TESTING.md).
+
+## Production Ready Features
+
+This boilerplate includes comprehensive production-ready features:
+
+### Security
+- ✅ Security headers (CSP, X-Frame-Options, etc.)
+- ✅ Encrypted token storage with refresh mechanism
+- ✅ Automatic token refresh on expiry
+- ✅ Request authentication with JWT
+
+### Performance
+- ✅ Code splitting (vendor, redux, mantine chunks)
+- ✅ Smart API caching with RTK Query
+- ✅ Bundle optimization (~700KB total, ~180KB gzipped)
+- ✅ Lazy loading and suspense
+
+### Reliability
+- ✅ Automatic retry logic for failed requests
+- ✅ Request queuing and cancellation
+- ✅ Error boundary with Sentry integration
+- ✅ Health check monitoring
+
+### Developer Experience
+- ✅ 70%+ test coverage enforcement
+- ✅ Pre-commit hooks (lint + format)
+- ✅ Structured logging utility
+- ✅ Skeleton loading components
+
+See [PRODUCTION_IMPROVEMENTS.md](./PRODUCTION_IMPROVEMENTS.md) for complete details.
+
 ## API Integration
 
 This application uses RTK Query for API calls. The base API URL is configured in `.env`.
@@ -187,6 +254,7 @@ For development without a backend, you can:
 POST   /auth/login          - User login
 POST   /auth/register       - User registration
 POST   /auth/logout         - User logout
+POST   /auth/refresh        - Refresh access token
 GET    /auth/me             - Get current user
 
 GET    /products            - Get all products
@@ -194,6 +262,8 @@ GET    /products/:id        - Get product by ID
 POST   /products            - Create product
 PUT    /products/:id        - Update product
 DELETE /products/:id        - Delete product
+
+GET    /health              - Health check endpoint
 ```
 
 ## User Roles

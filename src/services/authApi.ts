@@ -1,5 +1,5 @@
 import { baseApi } from './baseApi';
-import { AuthResponse, LoginCredentials, RegisterCredentials } from '@/types';
+import { AuthResponse, LoginCredentials, RegisterCredentials, RefreshTokenResponse } from '@/types';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,6 +26,13 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Auth'],
     }),
+    refreshToken: builder.mutation<RefreshTokenResponse, { refreshToken: string }>({
+      query: (body) => ({
+        url: '/auth/refresh',
+        method: 'POST',
+        body,
+      }),
+    }),
     getCurrentUser: builder.query<AuthResponse, void>({
       query: () => '/auth/me',
       providesTags: ['Auth'],
@@ -33,5 +40,10 @@ export const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useGetCurrentUserQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useRefreshTokenMutation,
+  useGetCurrentUserQuery,
+} = authApi;

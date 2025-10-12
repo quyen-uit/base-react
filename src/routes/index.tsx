@@ -5,6 +5,7 @@ import { HomePage } from '@/features/home';
 import { LoginPage, RegisterPage } from '@/features/auth';
 import { DashboardPage } from '@/features/dashboard';
 import { ProductsPage } from '@/features/products';
+import { ProfilePage } from '@/features/profile';
 import { AdminDashboardPage } from '@/features/admin';
 import { NotFoundPage } from '@/features/notfound';
 
@@ -30,6 +31,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         ),
       },
