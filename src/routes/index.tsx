@@ -7,6 +7,9 @@ import { DashboardPage } from '@/features/dashboard';
 import { ProductsPage } from '@/features/products';
 import { ProfilePage } from '@/features/profile';
 import { AdminDashboardPage } from '@/features/admin';
+import { AnalyticsPage } from '@/features/analytics';
+import { UsersPage } from '@/features/users';
+import { SettingsPage } from '@/features/settings';
 import { NotFoundPage } from '@/features/notfound';
 
 export const router = createBrowserRouter([
@@ -65,8 +68,20 @@ export const router = createBrowserRouter([
         element: <AdminDashboardPage />,
       },
       {
+        path: 'analytics',
+        element: <AnalyticsPage />,
+      },
+      {
         path: 'products',
         element: <ProductsPage />,
+      },
+      {
+        path: 'users',
+        element: <UsersPage />,
+      },
+      {
+        path: 'settings',
+        element: <SettingsPage />,
       },
     ],
   },

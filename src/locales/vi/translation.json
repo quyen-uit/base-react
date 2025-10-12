@@ -41,7 +41,18 @@
     "products": "Sản phẩm",
     "settings": "Cài đặt",
     "profile": "Hồ sơ",
-    "admin": "Quản trị"
+    "admin": "Quản trị",
+    "analytics": "Phân tích",
+    "users": "Người dùng",
+    "sections": {
+      "general": "Chung",
+      "applications": "Ứng dụng",
+      "administration": "Quản trị",
+      "navigation": "Điều hướng",
+      "dashboard": "Bảng điều khiển",
+      "management": "Quản lý",
+      "system": "Hệ thống"
+    }
   },
   "products": {
     "title": "Sản phẩm",

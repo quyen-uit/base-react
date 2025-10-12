@@ -41,7 +41,18 @@
     "products": "Products",
     "settings": "Settings",
     "profile": "Profile",
-    "admin": "Admin Panel"
+    "admin": "Admin Panel",
+    "analytics": "Analytics",
+    "users": "Users",
+    "sections": {
+      "general": "General",
+      "applications": "Applications",
+      "administration": "Administration",
+      "navigation": "Navigation",
+      "dashboard": "Dashboard",
+      "management": "Management",
+      "system": "System"
+    }
   },
   "products": {
     "title": "Products",

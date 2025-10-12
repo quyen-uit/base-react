@@ -1,4 +1,4 @@
-import { AppShell, Burger, Button, Group, Menu, Text, ActionIcon, NavLink } from '@mantine/core';
+import { AppShell, Burger, Button, Group, Menu, Text, ActionIcon, NavLink, Stack, ScrollArea, Divider, Box } from '@mantine/core';
 import { useDisclosure, useColorScheme, useLocalStorage } from '@mantine/hooks';
 import {
   IconMoon,
@@ -9,6 +9,10 @@ import {
   IconDashboard,
   IconPackage,
   IconSettings,
+  IconUsers,
+  IconChartBar,
+  IconChevronRight,
+  IconHome
 } from '@tabler/icons-react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -108,24 +112,90 @@ export const AdminLayout = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        <NavLink
-          label={t('nav.dashboard')}
-          leftSection={<IconDashboard size={20} />}
-          active={location.pathname === '/admin'}
-          onClick={() => navigate('/admin')}
-        />
-        <NavLink
-          label={t('nav.products')}
-          leftSection={<IconPackage size={20} />}
-          active={location.pathname === '/admin/products'}
-          onClick={() => navigate('/admin/products')}
-        />
-        <NavLink
-          label={t('nav.settings')}
-          leftSection={<IconSettings size={20} />}
-          active={location.pathname === '/admin/settings'}
-          onClick={() => navigate('/admin/settings')}
-        />
+        <ScrollArea>
+          <Stack gap="xs">
+            {/* Navigation Section */}
+            <Box>
+              <Text size="xs" fw={600} tt="uppercase" c="dimmed" mb="xs" pl="xs">
+                {t('nav.sections.navigation')}
+              </Text>
+              <NavLink
+                label={t('nav.home')}
+                leftSection={<IconHome size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                onClick={() => navigate('/')}
+                variant="subtle"
+              />
+            </Box>
+
+            <Divider />
+
+            {/* Dashboard Section */}
+            <Box>
+              <Text size="xs" fw={600} tt="uppercase" c="dimmed" mb="xs" pl="xs">
+                {t('nav.sections.dashboard')}
+              </Text>
+              <NavLink
+                label={t('nav.dashboard')}
+                leftSection={<IconDashboard size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                active={location.pathname === '/admin'}
+                onClick={() => navigate('/admin')}
+                variant="subtle"
+              />
+              <NavLink
+                label={t('nav.analytics')}
+                leftSection={<IconChartBar size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                active={location.pathname === '/admin/analytics'}
+                onClick={() => navigate('/admin/analytics')}
+                variant="subtle"
+              />
+            </Box>
+
+            <Divider />
+
+            {/* Management Section */}
+            <Box>
+              <Text size="xs" fw={600} tt="uppercase" c="dimmed" mb="xs" pl="xs">
+                {t('nav.sections.management')}
+              </Text>
+              <NavLink
+                label={t('nav.products')}
+                leftSection={<IconPackage size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                active={location.pathname === '/admin/products'}
+                onClick={() => navigate('/admin/products')}
+                variant="subtle"
+              />
+              <NavLink
+                label={t('nav.users')}
+                leftSection={<IconUsers size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                active={location.pathname === '/admin/users'}
+                onClick={() => navigate('/admin/users')}
+                variant="subtle"
+              />
+            </Box>
+
+            <Divider />
+
+            {/* System Section */}
+            <Box>
+              <Text size="xs" fw={600} tt="uppercase" c="dimmed" mb="xs" pl="xs">
+                {t('nav.sections.system')}
+              </Text>
+              <NavLink
+                label={t('nav.settings')}
+                leftSection={<IconSettings size={20} stroke={1.5} />}
+                rightSection={<IconChevronRight size={14} stroke={1.5} />}
+                active={location.pathname === '/admin/settings'}
+                onClick={() => navigate('/admin/settings')}
+                variant="subtle"
+              />
+            </Box>
+          </Stack>
+        </ScrollArea>
       </AppShell.Navbar>
 
       <AppShell.Main>
