@@ -34,7 +34,8 @@
       "@/utils/*": ["src/utils/*"],
       "@/app/*": ["src/app/*"],
       "@/locales/*": ["src/locales/*"],
-      "@/theme/*": ["src/theme/*"]
+      "@/theme/*": ["src/theme/*"],
+      "@/constants/*": ["src/constants/*"]
     }
   },
   "include": ["src"],

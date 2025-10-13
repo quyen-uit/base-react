@@ -1,10 +1,10 @@
 import { Container, Paper, Avatar, Group, Text, Stack, Button, Badge, Grid, Skeleton } from '@mantine/core';
 import { IconEdit, IconKey, IconMail, IconPhone, IconMapPin, IconWorld, IconBuilding } from '@tabler/icons-react';
 import { useState } from 'react';
-import { useGetProfileQuery } from '@/services/profileApi';
-import { EditProfileModal } from './EditProfileModal';
-import { ChangePasswordModal } from './ChangePasswordModal';
-import { AvatarUploadModal } from './AvatarUploadModal';
+import { useGetProfileQuery } from '@/services';
+import { EditProfileModal } from './components/EditProfileModal';
+import { ChangePasswordModal } from './components/ChangePasswordModal';
+import { AvatarUploadModal } from './components/AvatarUploadModal';
 
 export const ProfilePage = () => {
   const { data: profile, isLoading } = useGetProfileQuery();

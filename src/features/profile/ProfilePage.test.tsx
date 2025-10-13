@@ -3,10 +3,10 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/tests/test-utils';
 import { ProfilePage } from './ProfilePage';
-import * as profileApi from '@/services/profileApi';
+import * as profileApi from '@/services';
 
 // Mock the profile API
-vi.mock('@/services/profileApi', () => ({
+vi.mock('@/services', () => ({
   useGetProfileQuery: vi.fn(),
   useUpdateProfileMutation: vi.fn(() => [vi.fn(), { isLoading: false }]),
   useChangePasswordMutation: vi.fn(() => [vi.fn(), { isLoading: false }]),

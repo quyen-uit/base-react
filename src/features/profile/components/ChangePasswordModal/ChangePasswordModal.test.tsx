@@ -3,10 +3,10 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/tests/test-utils';
 import { ChangePasswordModal } from './ChangePasswordModal';
-import * as profileApi from '@/services/profileApi';
+import * as profileApi from '@/services';
 
 // Mock the profile API
-vi.mock('@/services/profileApi', () => ({
+vi.mock('@/services', () => ({
   useChangePasswordMutation: vi.fn(),
 }));
 

@@ -3,7 +3,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { z } from 'zod';
 import { ChangePasswordData } from '@/types';
-import { useChangePasswordMutation } from '@/services/profileApi';
+import { useChangePasswordMutation } from '@/services';
 import { IconCheck, IconAlertCircle } from '@tabler/icons-react';
 
 const changePasswordSchema = z

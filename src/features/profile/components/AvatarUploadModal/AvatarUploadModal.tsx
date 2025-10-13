@@ -2,7 +2,7 @@ import { Modal, Avatar, Stack, Button, FileButton, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { IconUpload, IconTrash, IconCheck, IconAlertCircle } from '@tabler/icons-react';
-import { useUploadAvatarMutation, useDeleteAvatarMutation } from '@/services/profileApi';
+import { useUploadAvatarMutation, useDeleteAvatarMutation } from '@/services';
 
 interface AvatarUploadModalProps {
   opened: boolean;

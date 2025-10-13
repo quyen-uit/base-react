@@ -30,6 +30,7 @@ export default defineConfig({
       '@/app': path.resolve(__dirname, './src/app'),
       '@/locales': path.resolve(__dirname, './src/locales'),
       '@/theme': path.resolve(__dirname, './src/theme'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
     },
   },
   server: {

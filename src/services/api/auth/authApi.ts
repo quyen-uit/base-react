@@ -1,4 +1,4 @@
-import { baseApi } from './baseApi';
+import { baseApi } from '../../baseApi';
 import { AuthResponse, LoginCredentials, RegisterCredentials, RefreshTokenResponse } from '@/types';
 
 export const authApi = baseApi.injectEndpoints({

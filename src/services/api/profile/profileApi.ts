@@ -1,4 +1,4 @@
-import { baseApi } from './baseApi';
+import { baseApi } from '../../baseApi';
 import { Profile, UpdateProfileData, ChangePasswordData, UpdateAvatarResponse } from '@/types';
 
 export const profileApi = baseApi.injectEndpoints({

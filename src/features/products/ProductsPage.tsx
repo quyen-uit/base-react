@@ -22,7 +22,7 @@ import {
   useDeleteProductMutation,
 } from '@/services';
 import { Product, CreateProductDto } from '@/types';
-import { ProductModal } from './ProductModal';
+import { ProductModal } from './components/ProductModal';
 
 export const ProductsPage = () => {
   const { t } = useTranslation();

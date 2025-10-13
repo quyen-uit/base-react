@@ -1,2 +1,2 @@
 export { ProductsPage } from './ProductsPage';
-export { ProductModal } from './ProductModal';
+export { ProductModal } from './components/ProductModal';

@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAppSelector } from '../app/hooks';
+import { useAppSelector } from '@/hooks';
 import { UserRole } from '@/types';
 import { hasRole } from '@/utils';
 import { Container, Title, Text, Button, Stack } from '@mantine/core';

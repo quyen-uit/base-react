@@ -3,7 +3,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { z } from 'zod';
 import { Profile, UpdateProfileData } from '@/types';
-import { useUpdateProfileMutation } from '@/services/profileApi';
+import { useUpdateProfileMutation } from '@/services';
 
 const updateProfileSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name too long'),
