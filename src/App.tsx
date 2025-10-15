@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript, localStorageColorSchemeManager } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { Provider } from 'react-redux';
@@ -11,12 +11,16 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './locales/i18n';
 
+const colorSchemeManager = localStorageColorSchemeManager({
+  key: 'mantine-color-scheme',
+});
+
 function App() {
   return (
     <>
-      <ColorSchemeScript defaultColorScheme="auto" />
+      <ColorSchemeScript />
       <Provider store={store}>
-        <MantineProvider theme={theme} defaultColorScheme="auto">
+        <MantineProvider theme={theme} colorSchemeManager={colorSchemeManager} defaultColorScheme="light">
           <ModalsProvider>
             <Notifications position="top-right" />
             <ErrorBoundary>

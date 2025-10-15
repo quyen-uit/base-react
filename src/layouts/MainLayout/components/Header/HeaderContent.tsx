@@ -1,8 +1,7 @@
-import { Group, Button, Menu, ActionIcon } from '@mantine/core';
+import { Group, Button, Menu, ActionIcon, useMantineColorScheme } from '@mantine/core';
 import { IconLanguage, IconMoon, IconSun, IconUser, IconLogout } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useColorScheme, useLocalStorage } from '@mantine/hooks';
 
 interface HeaderContentProps {
   isAuthenticated: boolean;
@@ -13,15 +12,10 @@ interface HeaderContentProps {
 export const HeaderContent = ({ isAuthenticated, user, onLogout }: HeaderContentProps) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const colorScheme = useColorScheme();
-  const [, setColorScheme] = useLocalStorage({
-    key: 'mantine-color-scheme',
-    defaultValue: colorScheme,
-  });
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const toggleTheme = () => {
-    const newScheme = colorScheme === 'dark' ? 'light' : 'dark';
-    setColorScheme(newScheme);
+    toggleColorScheme();
   };
 
   const changeLanguage = (lang: string) => {

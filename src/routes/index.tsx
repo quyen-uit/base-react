@@ -14,20 +14,20 @@ import { NotFoundPage } from '@/features/notfound';
 
 export const router = createBrowserRouter([
   {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+  },
+  {
     path: '/',
     element: <MainLayout />,
     children: [
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: 'login',
-        element: <LoginPage />,
-      },
-      {
-        path: 'register',
-        element: <RegisterPage />,
       },
       {
         path: 'dashboard',
