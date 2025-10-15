@@ -6,18 +6,20 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 
 - **Authentication**: Secure login and registration system with refresh tokens
 - **Role-Based Access Control (RBAC)**: Manage user roles and permissions
-- **Admin Dashboard**: Protected admin panel with dedicated layout
-- **Client Interface**: Public and protected user-facing pages
+- **User Profile Management**: Complete profile system with edit, password change, and avatar upload
+- **Admin Dashboard**: Protected admin panel with dedicated layout and analytics
+- **Product CRUD**: Full Create, Read, Update, Delete operations for products
+- **User Management**: Admin tools for managing users
+- **Analytics Dashboard**: Data visualization and insights
 - **Theming**: Light and dark mode support with Mantine UI
 - **Internationalization**: Multi-language support (English, Vietnamese)
-- **Product CRUD**: Full Create, Read, Update, Delete operations for products
 - **State Management**: Redux Toolkit with RTK Query for API calls
-- **Form Validation**: Zod schema validation with React Hook Form
+- **Form Validation**: Zod schema validation with React Hook Form and Mantine Form
 - **Error Handling**: Global error boundary with Sentry integration
 - **TypeScript**: Full type safety across the application
-- **Testing**: Comprehensive test suite with Vitest
-- **Security**: Production-ready security headers and CSP
-- **Performance**: Code splitting, caching, and optimization
+- **Testing**: Comprehensive test suite with Vitest (70%+ coverage)
+- **Security**: Production-ready security headers, CSP, and encrypted token storage
+- **Performance**: Code splitting, smart caching, and optimization
 
 ## Tech Stack
 
@@ -70,47 +72,76 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 
 ```
 src/
-├── app/                    # Redux store configuration
-│   ├── store.ts           # Store setup
-│   ├── authSlice.ts       # Auth state slice
-│   └── hooks.ts           # Typed Redux hooks
-├── components/            # Shared components
-│   ├── ErrorBoundary.tsx  # Error boundary component
-│   ├── ProtectedRoute.tsx # Route protection wrapper
-│   └── LoadingSpinner.tsx # Loading indicator
-├── features/              # Feature-based modules
-│   ├── auth/             # Authentication pages
-│   ├── home/             # Home page
-│   ├── dashboard/        # User dashboard
-│   ├── admin/            # Admin pages
-│   ├── products/         # Product CRUD
-│   └── notfound/         # 404 page
-├── hooks/                 # Custom React hooks
-├── layouts/               # Layout components
-│   ├── MainLayout.tsx    # Main app layout
-│   └── AdminLayout.tsx   # Admin panel layout
-├── locales/               # i18n translations
-│   ├── en/               # English translations
-│   ├── vi/               # Vietnamese translations
-│   └── i18n.ts           # i18n configuration
-├── routes/                # Route definitions
-│   └── index.tsx         # Router configuration
-├── services/              # API services
-│   ├── baseApi.ts        # RTK Query base API
-│   ├── authApi.ts        # Auth endpoints
-│   ├── productsApi.ts    # Product endpoints
-│   └── axios.ts          # Axios instance
-├── theme/                 # Mantine theme config
-│   └── index.ts          # Theme customization
-├── types/                 # TypeScript types
-│   ├── auth.ts           # Auth types
-│   ├── product.ts        # Product types
-│   └── common.ts         # Common types
-├── utils/                 # Utility functions
-│   ├── storage.ts        # LocalStorage helpers
-│   └── permissions.ts    # Permission utilities
-├── App.tsx                # Root component
-└── main.tsx               # Entry point
+├── app/                       # Redux store configuration
+│   ├── store.ts              # Store setup
+│   ├── authSlice.ts          # Auth state slice
+│   └── hooks.ts              # Typed Redux hooks
+├── components/               # Shared components (organized by category)
+│   ├── ui/                   # UI components
+│   │   ├── LoadingSpinner/   # Loading indicator
+│   │   └── Skeletons/        # Skeleton loading components
+│   ├── guards/               # Route guards
+│   │   └── ProtectedRoute/   # Route protection wrapper
+│   └── errors/               # Error handling components
+│       └── ErrorBoundary/    # Error boundary component
+├── constants/                # Application constants
+│   ├── api.ts                # API config & endpoints
+│   ├── routes.ts             # Route constants
+│   ├── permissions.ts        # Permission & role constants
+│   └── storage.ts            # Storage key constants
+├── features/                 # Feature-based modules
+│   ├── auth/                 # Authentication pages
+│   ├── home/                 # Home page
+│   ├── dashboard/            # User dashboard
+│   ├── profile/              # User profile with modals
+│   │   └── components/       # Profile-specific components
+│   │       ├── EditProfileModal/
+│   │       ├── ChangePasswordModal/
+│   │       └── AvatarUploadModal/
+│   ├── products/             # Product CRUD
+│   │   └── components/       # Product-specific components
+│   ├── admin/                # Admin dashboard
+│   ├── analytics/            # Analytics page
+│   ├── users/                # User management
+│   ├── settings/             # Settings page
+│   └── notfound/             # 404 page
+├── hooks/                    # Custom React hooks
+├── layouts/                  # Layout components
+│   ├── MainLayout/           # Main app layout with header/sidebar
+│   │   └── components/       # Layout sub-components
+│   └── AdminLayout.tsx       # Admin panel layout
+├── locales/                  # i18n translations
+│   ├── en/                   # English translations
+│   ├── vi/                   # Vietnamese translations
+│   └── i18n.ts               # i18n configuration
+├── routes/                   # Route definitions
+│   └── index.tsx             # Router configuration
+├── services/                 # API services
+│   ├── api/                  # API endpoints (organized by domain)
+│   │   ├── auth/             # Auth API endpoints
+│   │   ├── profile/          # Profile API endpoints
+│   │   ├── products/         # Products API endpoints
+│   │   └── health/           # Health check endpoints
+│   ├── baseApi.ts            # RTK Query base API
+│   ├── axios.ts              # Axios instance with interceptors
+│   └── sentry.ts             # Sentry configuration
+├── theme/                    # Mantine theme config
+│   └── index.ts              # Theme customization
+├── types/                    # TypeScript types
+│   ├── auth.ts               # Auth types
+│   ├── profile.ts            # Profile types
+│   ├── product.ts            # Product types
+│   ├── common.ts             # Common types
+│   └── index.ts              # Type exports
+├── utils/                    # Utility functions
+│   ├── storage.ts            # Encrypted localStorage helpers
+│   ├── permissions.ts        # Permission utilities
+│   └── logger.ts             # Logging utility
+├── tests/                    # Test configuration
+│   ├── setup.ts              # Test setup
+│   └── test-utils.tsx        # Testing utilities
+├── App.tsx                   # Root component
+└── main.tsx                  # Entry point
 ```
 
 ## Getting Started
@@ -138,10 +169,13 @@ npm install
 cp .env.example .env
 ```
 
-4. Update `.env` with your API URL:
+4. Update `.env` with your configuration:
 ```env
 VITE_API_URL=http://localhost:5000/api
 VITE_APP_NAME=React Claude App
+VITE_SENTRY_DSN=
+VITE_SENTRY_ENABLED=false
+VITE_ENV=development
 ```
 
 ### Development
@@ -233,8 +267,30 @@ This boilerplate includes comprehensive production-ready features:
 - ✅ Pre-commit hooks (lint + format)
 - ✅ Structured logging utility
 - ✅ Skeleton loading components
+- ✅ Organized component structure by category
+- ✅ Centralized constants management
 
-See [PRODUCTION_IMPROVEMENTS.md](./PRODUCTION_IMPROVEMENTS.md) for complete details.
+## Architecture Highlights
+
+### Organized Code Structure
+
+The project follows a clean, scalable architecture:
+- **Feature-based organization**: Each feature is self-contained with its components and tests
+- **Domain-driven API services**: API endpoints organized by domain in `services/api/`
+- **Centralized constants**: All configuration in `src/constants/`
+- **Component categorization**: UI, guards, and error components separated logically
+
+### Dual HTTP Client Strategy
+
+- **RTK Query**: Primary client for CRUD operations with automatic caching and React hooks
+- **Axios**: Used for token refresh logic with automatic retry and request queuing
+
+### Authentication Architecture
+
+- **Token storage**: XOR-encrypted tokens in localStorage (`utils/storage.ts`)
+- **Dual injection**: Tokens injected via both RTK Query `prepareHeaders` and Axios interceptors
+- **Smart refresh**: Automatic token refresh on 401 with request queuing to prevent race conditions
+- **State management**: Redux slice for auth state synced with localStorage
 
 ## API Integration
 
@@ -251,18 +307,26 @@ For development without a backend, you can:
 ### Expected API Endpoints
 
 ```
+# Authentication
 POST   /auth/login          - User login
 POST   /auth/register       - User registration
 POST   /auth/logout         - User logout
 POST   /auth/refresh        - Refresh access token
-GET    /auth/me             - Get current user
 
+# Profile
+GET    /profile             - Get current user profile
+PUT    /profile             - Update user profile
+POST   /profile/avatar      - Upload profile avatar
+PUT    /profile/password    - Change password
+
+# Products
 GET    /products            - Get all products
 GET    /products/:id        - Get product by ID
 POST   /products            - Create product
 PUT    /products/:id        - Update product
 DELETE /products/:id        - Delete product
 
+# Health
 GET    /health              - Health check endpoint
 ```
 
@@ -278,10 +342,20 @@ The application supports role-based access:
 
 ### Authentication
 
-- Login and registration forms with validation
-- JWT token storage in localStorage
-- Automatic token injection in API requests
+- Login and registration forms with Zod validation
+- JWT token storage with XOR encryption in localStorage
+- Automatic token injection in API requests (RTK Query + Axios)
+- Automatic token refresh on 401 with request queuing
 - Protected routes with redirect to login
+- Role-based access control
+
+### User Profile
+
+- View and edit profile information
+- Change password with validation
+- Upload and update profile avatar
+- Form validation with Zod schemas
+- Modal-based UI for better UX
 
 ### Internationalization
 
@@ -307,25 +381,58 @@ Full CRUD operations for products with:
 - Form validation with Zod
 - Real-time updates with RTK Query cache invalidation
 
+### Admin Features
+
+- Dedicated admin layout with different navigation
+- Analytics dashboard
+- User management
+- Settings management
+- Role-based route protection
+
 ## Development Tips
 
 ### Adding a New Feature
 
-1. Create a new folder in `src/features/`
-2. Add your components and logic
+1. Create a new folder in `src/features/[feature-name]/`
+2. Add your page component and sub-components in `components/` folder
 3. Export from `index.ts`
 4. Add routes in `src/routes/index.tsx`
-5. Add translations in `src/locales/`
+5. Add translations in `src/locales/en/` and `src/locales/vi/`
+6. Write tests co-located with components
 
 ### Adding API Endpoints
 
-1. Create or update API slice in `src/services/`
-2. Define TypeScript types in `src/types/`
-3. Use the generated hooks in components
+1. Create or update API slice in `src/services/api/[domain]/`
+2. Use `baseApi.injectEndpoints()` pattern
+3. Define TypeScript types in `src/types/[domain].ts`
+4. Export auto-generated hooks from `index.ts`
+5. Use the hooks in components (e.g., `useGetProfileQuery()`)
+
+### Using Constants
+
+The project uses centralized constants:
+- **API endpoints**: `src/constants/api.ts` (API_CONFIG, API_ENDPOINTS)
+- **Routes**: `src/constants/routes.ts` (ROUTES, PUBLIC_ROUTES, etc.)
+- **Permissions**: `src/constants/permissions.ts` (PERMISSIONS, ROLES)
+- **Storage keys**: `src/constants/storage.ts`
+
+### Component Organization
+
+Components are organized by category:
+- **UI components**: `src/components/ui/` (LoadingSpinner, Skeletons)
+- **Guards**: `src/components/guards/` (ProtectedRoute)
+- **Error handling**: `src/components/errors/` (ErrorBoundary)
+- **Feature components**: Within each feature's `components/` folder
+
+Each component has its own folder with:
+- Component file (e.g., `LoadingSpinner.tsx`)
+- Test file (e.g., `LoadingSpinner.test.tsx`)
+- Index file for exports (`index.ts`)
 
 ### Custom Hooks
 
-Create reusable hooks in `src/hooks/` for shared logic.
+Create reusable hooks in `src/hooks/` for shared logic. The project includes:
+- `useRedux.ts` - Typed Redux hooks (useAppDispatch, useAppSelector)
 
 ## Troubleshooting
 
