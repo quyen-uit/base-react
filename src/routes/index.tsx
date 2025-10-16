@@ -6,6 +6,7 @@ import { LoginPage, RegisterPage } from '@/features/auth';
 import { DashboardPage } from '@/features/dashboard';
 import { ProductsPage } from '@/features/products';
 import { ProfilePage } from '@/features/profile';
+import { GalleryPage, TeamPage, ServicesPage } from '@/features/examples';
 import { AdminDashboardPage } from '@/features/admin';
 import { AnalyticsPage } from '@/features/analytics';
 import { UsersPage } from '@/features/users';
@@ -52,6 +53,18 @@ export const router = createBrowserRouter([
             <ProductsPage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: 'examples/gallery',
+        element: <GalleryPage />,
+      },
+      {
+        path: 'examples/team',
+        element: <TeamPage />,
+      },
+      {
+        path: 'examples/services',
+        element: <ServicesPage />,
       },
     ],
   },

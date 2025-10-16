@@ -44,6 +44,10 @@
     "admin": "Quản trị",
     "analytics": "Phân tích",
     "users": "Người dùng",
+    "examples": "Ví dụ",
+    "gallery": "Thư viện ảnh",
+    "team": "Đội ngũ",
+    "services": "Dịch vụ",
     "sections": {
       "general": "Chung",
       "applications": "Ứng dụng",
@@ -120,5 +124,19 @@
     "unauthorized": "Bạn không có quyền truy cập trang này",
     "serverError": "Lỗi máy chủ",
     "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối."
+  },
+  "examples": {
+    "gallery": {
+      "title": "Thư viện ảnh",
+      "description": "Khám phá bộ sưu tập hình ảnh đẹp của chúng tôi"
+    },
+    "team": {
+      "title": "Đội ngũ của chúng tôi",
+      "description": "Gặp gỡ những người tài năng đằng sau thành công của chúng tôi"
+    },
+    "services": {
+      "title": "Dịch vụ của chúng tôi",
+      "description": "Khám phá những gì chúng tôi có thể làm cho bạn"
+    }
   }
 }

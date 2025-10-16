@@ -6,9 +6,14 @@ import {
   IconUserCircle,
   IconShoppingCart,
   IconChevronRight,
+  IconChevronDown,
+  IconPhoto,
+  IconUsers,
+  IconBriefcase,
 } from '@tabler/icons-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 
 interface SidebarContentProps {
   isAuthenticated: boolean;
@@ -19,6 +24,16 @@ export const SidebarContent = ({ isAuthenticated, userRole }: SidebarContentProp
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const [examplesOpened, setExamplesOpened] = useState(
+    location.pathname.startsWith('/examples')
+  );
+
+  // Auto-expand submenu when navigating to an examples page
+  useEffect(() => {
+    if (location.pathname.startsWith('/examples')) {
+      setExamplesOpened(true);
+    }
+  }, [location.pathname]);
 
   return (
     <Stack gap="xs">
@@ -35,6 +50,54 @@ export const SidebarContent = ({ isAuthenticated, userRole }: SidebarContentProp
           onClick={() => navigate('/')}
           variant="subtle"
         />
+
+        {/* Examples Submenu */}
+        <NavLink
+          label={t('nav.examples')}
+          leftSection={<IconPhoto size={20} stroke={1.5} />}
+          rightSection={
+            examplesOpened ? (
+              <IconChevronDown size={14} stroke={1.5} />
+            ) : (
+              <IconChevronRight size={14} stroke={1.5} />
+            )
+          }
+          onClick={() => setExamplesOpened(!examplesOpened)}
+          variant="subtle"
+          active={location.pathname.startsWith('/examples')}
+          opened={examplesOpened}
+        >
+          <NavLink
+            label={t('nav.gallery')}
+            leftSection={<IconPhoto size={18} stroke={1.5} />}
+            active={location.pathname === '/examples/gallery'}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/examples/gallery');
+            }}
+            variant="subtle"
+          />
+          <NavLink
+            label={t('nav.team')}
+            leftSection={<IconUsers size={18} stroke={1.5} />}
+            active={location.pathname === '/examples/team'}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/examples/team');
+            }}
+            variant="subtle"
+          />
+          <NavLink
+            label={t('nav.services')}
+            leftSection={<IconBriefcase size={18} stroke={1.5} />}
+            active={location.pathname === '/examples/services'}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/examples/services');
+            }}
+            variant="subtle"
+          />
+        </NavLink>
       </Box>
 
       {/* Applications Section - Only for authenticated users */}

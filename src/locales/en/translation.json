@@ -44,6 +44,10 @@
     "admin": "Admin Panel",
     "analytics": "Analytics",
     "users": "Users",
+    "examples": "Examples",
+    "gallery": "Gallery",
+    "team": "Team",
+    "services": "Services",
     "sections": {
       "general": "General",
       "applications": "Applications",
@@ -120,5 +124,19 @@
     "unauthorized": "You are not authorized to access this page",
     "serverError": "Server error occurred",
     "networkError": "Network error. Please check your connection."
+  },
+  "examples": {
+    "gallery": {
+      "title": "Gallery",
+      "description": "Explore our beautiful collection of images"
+    },
+    "team": {
+      "title": "Our Team",
+      "description": "Meet the talented people behind our success"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Discover what we can do for you"
+    }
   }
 }
