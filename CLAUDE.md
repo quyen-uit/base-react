@@ -107,10 +107,198 @@ export const productsApi = baseApi.injectEndpoints({
 
 ### Component Organization
 Components moved to categorized subdirectories:
-- `src/components/ui/`: LoadingSpinner, Skeletons
+- `src/components/ui/`: LoadingSpinner, Skeletons, Card (CSS Module example)
 - `src/components/guards/`: ProtectedRoute
 - `src/components/errors/`: ErrorBoundary
 Each component has its own folder with component file, tests, and index.ts
+
+### Styling Strategy
+This project uses **Mantine UI v7** with **CSS Modules** as the recommended styling approach.
+
+#### Styling Priority (Use in this order):
+1. **Mantine Props** (First Choice) - For standard Mantine features
+2. **CSS Modules** (Second Choice) - For custom component styles
+3. **Inline Styles** (Last Resort) - For dynamic/conditional values only
+
+#### 1. Mantine Props - Use FIRST ⭐
+**When to use:**
+- Standard spacing, colors, typography
+- Responsive design
+- Mantine's built-in design tokens
+
+**Examples:**
+```tsx
+// ✅ Good - Use Mantine props
+<Paper p="md" shadow="sm" radius="md" withBorder>
+  <Text size="lg" fw={600} c="blue">Title</Text>
+  <Button mt="md" variant="filled">Submit</Button>
+</Paper>
+
+// Responsive
+<Grid.Col span={{ base: 12, sm: 6, md: 4 }}>
+
+// Common props
+p="md"          // padding
+mt="xl"         // margin-top
+c="blue"        // color
+fw={600}        // font-weight
+ta="center"     // text-align
+```
+
+#### 2. CSS Modules - Use for CUSTOM STYLES 🎨
+**When to use:**
+- Custom layouts and positioning
+- Complex hover effects and animations
+- Pseudo-elements (::before, ::after)
+- Component-specific styling
+- Media queries beyond Mantine's breakpoints
+
+**File naming:** `ComponentName.module.css`
+
+**Structure:**
+```
+src/features/profile/
+├── ProfilePage.tsx
+├── ProfilePage.module.css
+└── components/
+    ├── UserCard/
+    │   ├── UserCard.tsx
+    │   └── UserCard.module.css
+```
+
+**Usage pattern:**
+```tsx
+// ProfileCard.tsx
+import { Paper, Text } from '@mantine/core';
+import classes from './ProfileCard.module.css';
+
+export const ProfileCard = () => {
+  return (
+    <Paper className={classes.card} p="md">
+      <div className={classes.header}>
+        <Text className={classes.title}>Profile</Text>
+      </div>
+    </Paper>
+  );
+};
+```
+
+```css
+/* ProfileCard.module.css */
+.card {
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--mantine-color-gray-3);
+}
+
+.title {
+  background: linear-gradient(45deg, var(--mantine-color-blue-6), var(--mantine-color-cyan-6));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.card {
+  animation: fadeIn 0.3s ease;
+}
+```
+
+**Combining CSS Modules with Mantine:**
+```tsx
+// ✅ Best practice - Combine both
+<Paper className={classes.card} p="md" shadow="sm">
+  <Text className={classes.title} size="lg" fw={600}>
+    Title
+  </Text>
+</Paper>
+```
+
+**Using Mantine's classNames prop:**
+```tsx
+// For more control over Mantine component internals
+<Button
+  classNames={{
+    root: classes.buttonRoot,
+    label: classes.buttonLabel,
+    section: classes.buttonIcon,
+  }}
+>
+  Click me
+</Button>
+```
+
+**Access Mantine CSS Variables:**
+```css
+.myClass {
+  color: var(--mantine-color-blue-6);
+  background: var(--mantine-color-gray-0);
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-md);
+  font-family: var(--mantine-font-family);
+}
+
+/* Responsive breakpoints */
+@media (min-width: $mantine-breakpoint-sm) {
+  .myClass {
+    padding: var(--mantine-spacing-xl);
+  }
+}
+```
+
+#### 3. Inline Styles - Use SPARINGLY ⚠️
+**When to use:**
+- Dynamic values from props/state
+- One-off exceptions
+
+**Examples:**
+```tsx
+// ✅ Good - Dynamic value
+<div style={{ width: `${progress}%` }}>
+
+// ✅ Good - One-off override
+<Avatar style={{ cursor: 'pointer' }} />
+
+// ❌ Avoid - Should use CSS Module
+<div style={{
+  display: 'flex',
+  padding: '20px',
+  borderRadius: '8px',
+}}>
+```
+
+#### Styling Decision Matrix
+
+| Scenario | Use |
+|----------|-----|
+| Spacing (padding, margin) | **Mantine props** (`p="md"`, `mt="xl"`) |
+| Colors from theme | **Mantine props** (`c="blue"`) |
+| Typography | **Mantine props** (`size="lg"`, `fw={600}`) |
+| Custom layouts (grid, flex) | **CSS Modules** |
+| Animations | **CSS Modules** |
+| Hover effects | **CSS Modules** |
+| Pseudo-elements | **CSS Modules** |
+| Dynamic colors/sizes from state | **Inline styles** |
+| One-off overrides | **Inline styles** |
+
+#### Setup
+- TypeScript types for CSS Modules: `src/types/css-modules.d.ts`
+- Example component: `src/components/ui/Card/` (demonstrates all patterns)
+- Vite handles CSS Modules automatically (no additional config needed)
+- PostCSS configured with `postcss-preset-mantine` for Mantine-specific transformations
 
 ### Layouts
 - **MainLayout** (`src/layouts/MainLayout/`): Header with auth controls, Sidebar for navigation, uses `<Outlet />` for nested routes
