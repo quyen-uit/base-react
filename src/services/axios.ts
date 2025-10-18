@@ -1,20 +1,22 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
 import { storage } from '@/utils';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { logger } from '@/utils/logger';
+import { API_CONFIG, API_ENDPOINTS } from '@/constants/api';
+import { handleLogout, handleTokenUpdate } from './session';
+import type { RefreshTokenResponse } from '@/types/auth';
 
 export const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: API_CONFIG.BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000, // 30 seconds
+  timeout: API_CONFIG.TIMEOUT,
 });
 
 // Configure axios-retry for automatic retries
 axiosRetry(axiosInstance, {
-  retries: 3,
+  retries: API_CONFIG.RETRY_ATTEMPTS,
   retryDelay: axiosRetry.exponentialDelay,
   retryCondition: (error) => {
     // Retry on network errors or 5xx errors
@@ -24,7 +26,7 @@ axiosRetry(axiosInstance, {
     );
   },
   onRetry: (retryCount, _error, requestConfig) => {
-    console.log(`Retry attempt ${retryCount} for ${requestConfig.url}`);
+    logger.info(`Retry attempt ${retryCount} for ${requestConfig.url}`);
   },
 });
 
@@ -90,23 +92,24 @@ axiosInstance.interceptors.response.use(
       const refreshToken = storage.getRefreshToken();
 
       if (!refreshToken) {
-        // No refresh token, logout
-        storage.clear();
-        window.location.href = '/login';
+        // No refresh token, trigger logout flow
+        handleLogout();
         return Promise.reject(error);
       }
 
       try {
         // Attempt to refresh the token
-        const response = await axios.post(`${API_URL}/auth/refresh`, {
-          refreshToken,
-        });
+        const response = await axios.post<RefreshTokenResponse>(
+          `${API_CONFIG.BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+          { refreshToken }
+        );
 
         const { token: newToken, refreshToken: newRefreshToken } = response.data;
 
-        // Save new tokens
+        // Save new tokens (local fallback) and notify app state
         storage.setToken(newToken);
         storage.setRefreshToken(newRefreshToken);
+        handleTokenUpdate({ token: newToken, refreshToken: newRefreshToken });
 
         // Update header for original request
         if (originalRequest.headers) {
@@ -121,8 +124,7 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed, logout
         processQueue(refreshError as AxiosError, null);
-        storage.clear();
-        window.location.href = '/login';
+        handleLogout();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
@@ -134,6 +136,4 @@ axiosInstance.interceptors.response.use(
 );
 
 // Request cancellation helper
-export const createCancelToken = () => {
-  return axios.CancelToken.source();
-};
+export const createAbortController = () => new AbortController();
