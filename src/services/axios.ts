@@ -1,20 +1,20 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
-import { storage } from '@/utils';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { API_CONFIG, API_ENDPOINTS } from '@/constants';
+import { getCsrfToken } from '@/utils';
 
 export const axiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: API_CONFIG.BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000, // 30 seconds
+  timeout: API_CONFIG.TIMEOUT,
+  withCredentials: true,
 });
 
 // Configure axios-retry for automatic retries
 axiosRetry(axiosInstance, {
-  retries: 3,
+  retries: API_CONFIG.RETRY_ATTEMPTS,
   retryDelay: axiosRetry.exponentialDelay,
   retryCondition: (error) => {
     // Retry on network errors or 5xx errors
@@ -34,6 +34,16 @@ let failedQueue: Array<{
   reject: (reason?: any) => void;
 }> = [];
 
+let getAccessToken: () => string | null = () => null;
+export const setAccessTokenGetter = (fn: () => string | null) => {
+  getAccessToken = fn;
+};
+
+let onTokenRefreshed: (token: string) => void = () => {};
+export const setOnTokenRefreshed = (fn: (token: string) => void) => {
+  onTokenRefreshed = fn;
+};
+
 const processQueue = (error: AxiosError | null, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
@@ -49,9 +59,16 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
 // Request interceptor to add token
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = storage.getToken();
+    const token = getAccessToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    // CSRF header for non-GET
+    if (config.method && config.method.toUpperCase() !== 'GET' && config.headers) {
+      const csrf = getCsrfToken();
+      if (csrf) {
+        (config.headers as any)['X-CSRF-Token'] = csrf;
+      }
     }
     return config;
   },
@@ -87,26 +104,17 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const refreshToken = storage.getRefreshToken();
-
-      if (!refreshToken) {
-        // No refresh token, logout
-        storage.clear();
-        window.location.href = '/login';
-        return Promise.reject(error);
-      }
-
       try {
-        // Attempt to refresh the token
-        const response = await axios.post(`${API_URL}/auth/refresh`, {
-          refreshToken,
+        // Attempt to refresh the token using httpOnly refresh cookie
+        const response = await axios.post(`${API_CONFIG.BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`, {}, {
+          withCredentials: true,
+          headers: { 'Content-Type': 'application/json' },
         });
 
-        const { token: newToken, refreshToken: newRefreshToken } = response.data;
+        const { token: newToken } = response.data as { token: string };
 
-        // Save new tokens
-        storage.setToken(newToken);
-        storage.setRefreshToken(newRefreshToken);
+        // Update application state with new token
+        onTokenRefreshed(newToken);
 
         // Update header for original request
         if (originalRequest.headers) {
@@ -121,7 +129,6 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed, logout
         processQueue(refreshError as AxiosError, null);
-        storage.clear();
         window.location.href = '/login';
         return Promise.reject(refreshError);
       } finally {

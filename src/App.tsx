@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { MantineProvider, ColorSchemeScript, localStorageColorSchemeManager } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
+import { axiosInstance } from '@/services';
+import { setCredentials, setInitialized } from '@/app/authSlice';
 import { router } from '@/routes';
 import { theme } from '@/theme';
 import { ErrorBoundary } from '@/components';
@@ -16,6 +19,23 @@ const colorSchemeManager = localStorageColorSchemeManager({
 });
 
 function App() {
+  useEffect(() => {
+    // Bootstrap: attempt to hydrate session using refresh cookie
+    const bootstrap = async () => {
+      try {
+        const me = await axiosInstance.get('/auth/me');
+        const user = (me.data as any).user ?? me.data;
+        store.dispatch(setCredentials({ user }));
+      } catch (_e) {
+        // not authenticated; leave as logged out
+      } finally {
+        store.dispatch(setInitialized(true));
+      }
+    };
+
+    bootstrap();
+  }, []);
+
   return (
     <>
       <ColorSchemeScript />

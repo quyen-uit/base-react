@@ -1,46 +1,48 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, User } from '@/types';
-import { storage } from '@/utils';
+// Inlined user persistence (no storage util)
 
 const initialState: AuthState = {
   user: null,
-  token: storage.getToken(),
-  refreshToken: storage.getRefreshToken(),
-  isAuthenticated: !!storage.getToken(),
+  token: null,
+  isAuthenticated: false,
   isLoading: false,
+  initialized: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ user: User; token: string; refreshToken: string }>) => {
+    setCredentials: (state, action: PayloadAction<{ user: User; token?: string }>) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.refreshToken = action.payload.refreshToken;
+      if (action.payload.token) {
+        state.token = action.payload.token;
+      }
       state.isAuthenticated = true;
-      storage.setToken(action.payload.token);
-      storage.setRefreshToken(action.payload.refreshToken);
-      storage.setUser(JSON.stringify(action.payload.user));
+      try {
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
+      } catch {}
     },
-    updateTokens: (state, action: PayloadAction<{ token: string; refreshToken: string }>) => {
+    updateTokens: (state, action: PayloadAction<{ token: string }>) => {
       state.token = action.payload.token;
-      state.refreshToken = action.payload.refreshToken;
-      storage.setToken(action.payload.token);
-      storage.setRefreshToken(action.payload.refreshToken);
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.refreshToken = null;
       state.isAuthenticated = false;
-      storage.clear();
+      try {
+        localStorage.removeItem('user');
+      } catch {}
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
+    setInitialized: (state, action: PayloadAction<boolean>) => {
+      state.initialized = action.payload;
+    },
   },
 });
 
-export const { setCredentials, updateTokens, logout, setLoading } = authSlice.actions;
+export const { setCredentials, updateTokens, logout, setLoading, setInitialized } = authSlice.actions;
 export default authSlice.reducer;

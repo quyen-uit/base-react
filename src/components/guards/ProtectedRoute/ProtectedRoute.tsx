@@ -3,6 +3,7 @@ import { useAppSelector } from '@/hooks';
 import { UserRole } from '@/types';
 import { hasRole } from '@/utils';
 import { Container, Title, Text, Button, Stack } from '@mantine/core';
+import { LoadingSpinner } from '@/components';
 import { useTranslation } from 'react-i18next';
 
 interface ProtectedRouteProps {
@@ -12,8 +13,16 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
   const { t } = useTranslation();
-  const { isAuthenticated, user } = useAppSelector((state: any) => state.auth);
+  const { isAuthenticated, user, initialized } = useAppSelector((state) => state.auth);
   const location = useLocation();
+
+  if (!initialized) {
+    return (
+      <Container size="sm" mt="xl">
+        <LoadingSpinner />
+      </Container>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;

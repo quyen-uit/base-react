@@ -4,7 +4,7 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 
 ## Features
 
-- **Authentication**: Secure login and registration system with refresh tokens
+- **Authentication**: Refresh token in httpOnly cookie; access token in Redux (memory only)
 - **Role-Based Access Control (RBAC)**: Manage user roles and permissions
 - **User Profile Management**: Complete profile system with edit, password change, and avatar upload
 - **Admin Dashboard**: Protected admin panel with dedicated layout and analytics
@@ -18,7 +18,7 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 - **Error Handling**: Global error boundary with Sentry integration
 - **TypeScript**: Full type safety across the application
 - **Testing**: Comprehensive test suite with Vitest (70%+ coverage)
-- **Security**: Production-ready security headers, CSP, and encrypted token storage
+- **Security**: Production-ready security headers, CSP, cookie-based auth
 - **Performance**: Code splitting, smart caching, and optimization
 
 ## Tech Stack
@@ -66,7 +66,7 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 ### Security & Monitoring
 - **Sentry** - Error tracking and performance monitoring
 - **axios-retry** - Automatic request retries
-- **Encrypted Storage** - Secure token storage
+- **Cookie-based Auth** - httpOnly refresh cookie; memory access token
 
 ## Project Structure
 
@@ -88,7 +88,7 @@ src/
 │   ├── api.ts                # API config & endpoints
 │   ├── routes.ts             # Route constants
 │   ├── permissions.ts        # Permission & role constants
-│   └── storage.ts            # Storage key constants
+│   └── storage.ts            # 
 ├── features/                 # Feature-based modules
 │   ├── auth/                 # Authentication pages
 │   ├── home/                 # Home page
@@ -134,7 +134,7 @@ src/
 │   ├── common.ts             # Common types
 │   └── index.ts              # Type exports
 ├── utils/                    # Utility functions
-│   ├── storage.ts            # Encrypted localStorage helpers
+│   ├── storage.ts            # User storage helpers
 │   ├── permissions.ts        # Permission utilities
 │   └── logger.ts             # Logging utility
 ├── tests/                    # Test configuration
@@ -177,6 +177,14 @@ VITE_SENTRY_DSN=
 VITE_SENTRY_ENABLED=false
 VITE_ENV=development
 ```
+
+## Authentication
+
+- Refresh token is stored as an httpOnly, Secure cookie set by the backend.
+- Access token is kept only in memory (Redux). It is attached to requests via the `Authorization: Bearer <token>` header by RTK Query and Axios.
+- Axios is configured with `withCredentials: true` so cookies are sent automatically. On 401, it calls `/auth/refresh`, updates the token in Redux, and retries the original request.
+- On app start, the app calls `/auth/me` to hydrate the current user and gate protected routes until initialization completes.
+- No tokens are stored in `localStorage`.
 
 ### Development
 
@@ -287,10 +295,10 @@ The project follows a clean, scalable architecture:
 
 ### Authentication Architecture
 
-- **Token storage**: XOR-encrypted tokens in localStorage (`utils/storage.ts`)
-- **Dual injection**: Tokens injected via both RTK Query `prepareHeaders` and Axios interceptors
+- **Token storage**: Access token in Redux (memory); refresh token in httpOnly cookie
+- **Header injection**: Authorization attached by RTK Query `prepareHeaders` and Axios interceptors from Redux state
 - **Smart refresh**: Automatic token refresh on 401 with request queuing to prevent race conditions
-- **State management**: Redux slice for auth state synced with localStorage
+- **State management**: Redux slice for auth state; no localStorage persistence
 
 ## API Integration
 
@@ -343,7 +351,7 @@ The application supports role-based access:
 ### Authentication
 
 - Login and registration forms with Zod validation
-- JWT token storage with XOR encryption in localStorage
+- Access token in Redux (memory); refresh token in httpOnly cookie
 - Automatic token injection in API requests (RTK Query + Axios)
 - Automatic token refresh on 401 with request queuing
 - Protected routes with redirect to login
@@ -479,3 +487,5 @@ For issues and questions, please open an issue on GitHub.
 ---
 
 Built with ❤️ using React, TypeScript, and Mantine UI
+
+

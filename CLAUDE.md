@@ -43,13 +43,16 @@ Pre-commit hooks via Husky automatically run ESLint and Prettier on staged files
 - **API Services**: Individual API slices in `src/services/api/` extend baseApi using `injectEndpoints()`
 
 ### Authentication Flow
-1. User logs in via `authApi.login` mutation
-2. Tokens stored in encrypted localStorage via `storage` utility (`src/utils/storage.ts`)
-3. `authSlice.setCredentials` updates Redux state
-4. **Two-layer token injection**:
-   - RTK Query: `baseApi` prepareHeaders injects token from storage
-   - Axios: Request interceptor in `src/services/axios.ts` adds Bearer token
-5. **Token refresh**: Axios response interceptor handles 401s, attempts refresh, queues failed requests, auto-logs out on failure
+1. User logs in via `authApi.login` mutation (backend sets httpOnly refresh cookie; response returns `token`)
+2. Access token is stored in Redux state (memory only). No tokens in localStorage.
+3. `authSlice.setCredentials({ user, token })` updates Redux state
+4. Request auth:
+   - RTK Query: `baseApi` `prepareHeaders` reads `state.auth.token` and sets `Authorization: Bearer <token>`
+   - Axios: Request interceptor reads token from Redux and sets `Authorization`; `withCredentials: true` is enabled
+5. Refresh flow:
+   - On 401, Axios posts `/auth/refresh` with credentials (uses refresh cookie)
+   - On success, updates Redux token and retries queued requests
+   - On failure, redirects to `/login`
 
 ### Routing Architecture
 - **Main Layout** (`/`): Public pages + protected user routes
@@ -89,11 +92,11 @@ export const productsApi = baseApi.injectEndpoints({
 - **RTK Query**: Primary for CRUD operations, automatic caching, React hooks integration
 - **Axios** (`src/services/axios.ts`): Used for token refresh logic, includes axios-retry with exponential backoff for 5xx/network errors
 
-### Token Storage Security
-`src/utils/storage.ts` provides encrypted localStorage wrapper:
-- Tokens XOR-encrypted with key (obfuscation, not cryptographic security)
-- `getToken()`, `setToken()`, `getRefreshToken()`, `clear()`
-- JWT expiration checking utilities
+### Token Storage Strategy
+- Access token: kept only in memory (Redux). Never written to localStorage.
+- Refresh token: httpOnly, Secure cookie managed by the backend.
+- CSRF: if enabled by backend, add `X-CSRF-Token` from a readable cookie on non-GET requests.
+- Utilities: `storage.ts` token methods are deprecated in favor of cookie + memory approach; JWT helpers remain for expiry checks if needed.
 
 ### Error Handling
 - **ErrorBoundary**: Wraps app in `src/main.tsx`, integrates with Sentry
@@ -306,9 +309,9 @@ export const ProfileCard = () => {
 
 ### Security Features
 - Security headers in `vite.config.ts` (CSP, X-Frame-Options, etc.)
-- Encrypted token storage
 - Automatic token refresh with request queuing
-- 30-second axios timeout
+- Axios timeout aligned with `API_CONFIG.TIMEOUT` (10s by default)
+- Cookies are sent via `withCredentials`; prefer strict CSP in production
 
 ### Performance Optimizations
 - Code splitting: vendor, redux, mantine chunks (`vite.config.ts` manualChunks)

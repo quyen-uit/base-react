@@ -67,32 +67,26 @@ For production, update `vite.config.ts` to use stricter CSP:
 ## Token Storage
 
 ### Current Implementation
-- Tokens are stored in localStorage
-- Automatically injected into API requests via axios interceptors
-- Cleared on logout or 401 errors
+- Refresh token: httpOnly, Secure cookie managed by the backend
+- Access token: stored only in memory (Redux state) and added to requests via `Authorization: Bearer <token>`
+- Cookies are sent on requests using `withCredentials`
+- No tokens are persisted in `localStorage`
 
 ### Security Considerations
 
-**localStorage Vulnerabilities:**
-- Vulnerable to XSS attacks
-- Accessible by any JavaScript running on the page
-- Not automatically sent with requests (better than cookies for some scenarios)
-
-**Recommendations:**
-1. Implement refresh token mechanism (see next section)
-2. Use short-lived access tokens (15-30 minutes)
-3. Consider httpOnly cookies for sensitive applications
-4. Implement token encryption at rest
+- httpOnly cookies mitigate XSS token theft (JS cannot read refresh token)
+- Short‑lived access tokens limit impact of compromise
+- CSRF protection recommended for state‑changing requests (see CSRF Protection)
 
 ## Refresh Token Mechanism
 
-The application will implement a refresh token system with these security features:
+The application uses a refresh token system with these security features:
 
-1. **Access Token**: Short-lived (15 min), stored in memory or localStorage
-2. **Refresh Token**: Long-lived (7 days), stored in httpOnly cookie
-3. **Automatic Refresh**: Tokens refreshed before expiry
-4. **Secure Rotation**: Refresh tokens rotate on each use
-5. **Revocation**: Tokens can be revoked on logout or security events
+1. **Access Token**: Short-lived (~15 min), stored in memory (Redux)
+2. **Refresh Token**: Long-lived (e.g., 7 days), stored in httpOnly cookie
+3. **Automatic Refresh**: On 401, frontend calls `/auth/refresh` with credentials
+4. **Secure Rotation**: Backend should rotate refresh tokens on each use
+5. **Revocation**: Tokens revoked on logout or security events; backend clears cookie
 
 ## HTTPS Enforcement
 
@@ -183,15 +177,18 @@ Response interceptor handles:
 
 ## CSRF Protection
 
-### Current State
-- Not fully implemented (JWT in localStorage doesn't require CSRF tokens)
-
-### If Using Cookies
-Implement CSRF tokens:
+When using cookies, implement CSRF tokens for state‑changing requests:
 ```typescript
-// Add CSRF token to requests
-axios.defaults.headers.common['X-CSRF-Token'] = getCsrfToken();
+// Add CSRF token to requests (frontend)
+axiosInstance.interceptors.request.use((config) => {
+  if (config.method && config.method.toUpperCase() !== 'GET') {
+    const csrf = getCsrfToken();
+    if (csrf) config.headers['X-CSRF-Token'] = csrf;
+  }
+  return config;
+});
 ```
+Backend should provide a readable CSRF cookie (e.g., `XSRF-TOKEN`) and validate the header.
 
 ## Dependency Security
 
