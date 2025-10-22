@@ -5,7 +5,7 @@ import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import { axiosInstance } from '@/services';
+import { authApi } from '@/services';
 import { setCredentials, setInitialized } from '@/app/authSlice';
 import { router } from '@/routes';
 import { theme } from '@/theme';
@@ -23,8 +23,10 @@ function App() {
     // Bootstrap: attempt to hydrate session using refresh cookie
     const bootstrap = async () => {
       try {
-        const me = await axiosInstance.get('/auth/me');
-        const user = (me.data as any).user ?? me.data;
+        const me = await store.dispatch(
+          authApi.endpoints.getCurrentUser.initiate()
+        ).unwrap();
+        const user = (me as any).user ?? me;
         store.dispatch(setCredentials({ user }));
       } catch (_e) {
         // not authenticated; leave as logged out

@@ -47,12 +47,12 @@ Pre-commit hooks via Husky automatically run ESLint and Prettier on staged files
 2. Access token is stored in Redux state (memory only). No tokens in localStorage.
 3. `authSlice.setCredentials({ user, token })` updates Redux state
 4. Request auth:
-   - RTK Query: `baseApi` `prepareHeaders` reads `state.auth.token` and sets `Authorization: Bearer <token>`
-   - Axios: Request interceptor reads token from Redux and sets `Authorization`; `withCredentials: true` is enabled
-5. Refresh flow:
-   - On 401, Axios posts `/auth/refresh` with credentials (uses refresh cookie)
-   - On success, updates Redux token and retries queued requests
-   - On failure, redirects to `/login`
+   - RTK Query: `baseApi` `prepareHeaders` reads `state.auth.token` and sets `Authorization: Bearer <token>`; `credentials: 'include'` sends cookies
+5. Refresh flow (RTK Query):
+   - On 401, a custom `baseQueryWithReauth` posts `/auth/refresh` with credentials (uses refresh cookie)
+   - On success, updates Redux token and transparently retries the failed request
+   - Concurrent 401s are queued behind a single refresh
+   - On failure, error propagates (UI redirects to `/login`)
 
 ### Routing Architecture
 - **Main Layout** (`/`): Public pages + protected user routes
@@ -88,19 +88,17 @@ export const productsApi = baseApi.injectEndpoints({
 });
 ```
 
-### Dual HTTP Clients
-- **RTK Query**: Primary for CRUD operations, automatic caching, React hooks integration
-- **Axios** (`src/services/axios.ts`): Used for token refresh logic, includes axios-retry with exponential backoff for 5xx/network errors
+### HTTP Client
+- **RTK Query**: Single client for CRUD and auth flows. Uses a `baseQueryWithReauth` wrapper for refresh and `retry` for transient failures.
 
 ### Token Storage Strategy
 - Access token: kept only in memory (Redux). Never written to localStorage.
 - Refresh token: httpOnly, Secure cookie managed by the backend.
-- CSRF: if enabled by backend, add `X-CSRF-Token` from a readable cookie on non-GET requests.
-- Utilities: `storage.ts` token methods are deprecated in favor of cookie + memory approach; JWT helpers remain for expiry checks if needed.
+- CSRF: currently not enforced by backend; no `X-CSRF-Token` header is sent. If enabled later, add the header for non-GET requests.
 
 ### Error Handling
 - **ErrorBoundary**: Wraps app in `src/main.tsx`, integrates with Sentry
-- **Axios Interceptors**: Centralized error handling in `src/services/axios.ts`
+- **RTK Query Wrapper**: Centralized error handling and refresh in `src/services/baseApi.ts`
 - **RTK Query**: Errors accessible in hook results (e.g., `{ error, isError }`)
 
 ### Internationalization
@@ -310,8 +308,8 @@ export const ProfileCard = () => {
 ### Security Features
 - Security headers in `vite.config.ts` (CSP, X-Frame-Options, etc.)
 - Automatic token refresh with request queuing
-- Axios timeout aligned with `API_CONFIG.TIMEOUT` (10s by default)
-- Cookies are sent via `withCredentials`; prefer strict CSP in production
+- Request timeout/retry behavior handled via RTK Query `retry` with `API_CONFIG.RETRY_ATTEMPTS`
+- Cookies are sent via `credentials: 'include'`; prefer strict CSP in production
 
 ### Performance Optimizations
 - Code splitting: vendor, redux, mantine chunks (`vite.config.ts` manualChunks)
@@ -353,8 +351,6 @@ npm run test:run -- src/features/profile/ChangePasswordModal.test.tsx  # Single 
 - `src/app/store.ts` - Redux store configuration
 - `src/app/authSlice.ts` - Authentication state management
 - `src/services/baseApi.ts` - RTK Query base API with global config
-- `src/services/axios.ts` - Axios instance with interceptors for token refresh
-- `src/utils/storage.ts` - Encrypted localStorage utilities
 - `src/routes/index.tsx` - Application routing structure
 - `src/types/` - TypeScript type definitions
 - `vite.config.ts` - Build config, path aliases, security headers, code splitting
