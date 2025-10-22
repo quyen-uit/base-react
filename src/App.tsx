@@ -10,6 +10,7 @@ import { setCredentials, setInitialized } from '@/app/authSlice';
 import { router } from '@/routes';
 import { theme } from '@/theme';
 import { ErrorBoundary } from '@/components';
+import type { User } from '@/types';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './locales/i18n';
@@ -26,9 +27,9 @@ function App() {
         const me = await store.dispatch(
           authApi.endpoints.getCurrentUser.initiate()
         ).unwrap();
-        const user = (me as any).user ?? me;
-        store.dispatch(setCredentials({ user }));
-      } catch (_e) {
+        const userData = (me as { user?: unknown }).user ?? me;
+        store.dispatch(setCredentials({ user: userData as unknown as User }));
+      } catch {
         // not authenticated; leave as logged out
       } finally {
         store.dispatch(setInitialized(true));

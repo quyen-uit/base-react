@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 interface HeaderContentProps {
   isAuthenticated: boolean;
-  user: any;
+  user: User | null;
   onLogout: () => void;
 }
 
@@ -65,3 +65,4 @@ export const HeaderContent = ({ isAuthenticated, user, onLogout }: HeaderContent
     </Group>
   );
 };
+import type { User } from '@/types';

@@ -43,8 +43,8 @@ export const ProductModal = ({
     },
   });
 
-  const handleSubmit = (values: any) => {
-    onSubmit(values as CreateProductDto);
+  const handleSubmit = (values: CreateProductDto) => {
+    onSubmit(values);
     form.reset();
   };
 

@@ -12,7 +12,7 @@ export const productsApi = baseApi.injectEndpoints({
     getProducts: builder.query<ProductsResponse, PaginationParams | void>({
       query: (params = {}) => ({
         url: '/products',
-        params: params as Record<string, any>,
+        params: params as Record<string, unknown>,
       }),
       providesTags: ['Products'],
     }),

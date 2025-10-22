@@ -1,4 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type {
+  BaseQueryApi,
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+} from '@reduxjs/toolkit/query';
 import { API_CONFIG, API_ENDPOINTS } from '@/constants';
 import type { RootState } from '@/app/store';
 import { updateTokens } from '@/app/authSlice';
@@ -18,7 +25,7 @@ const rawBaseQuery = fetchBaseQuery({
 
 let refreshPromise: Promise<string | null> | null = null;
 
-async function refreshAccessToken(api: any, extraOptions: any): Promise<string | null> {
+async function refreshAccessToken(api: BaseQueryApi, extraOptions: object): Promise<string | null> {
   // Perform refresh using httpOnly cookie; no body needed
   const refreshResult = await rawBaseQuery(
     { url: API_ENDPOINTS.AUTH.REFRESH, method: 'POST' },
@@ -26,20 +33,26 @@ async function refreshAccessToken(api: any, extraOptions: any): Promise<string |
     extraOptions
   );
 
-  if (refreshResult.data && (refreshResult.data as any).token) {
-    const newToken = (refreshResult.data as any).token as string;
+  if (refreshResult.data && (refreshResult.data as { token?: string }).token) {
+    const newToken = (refreshResult.data as { token?: string }).token as string;
     api.dispatch(updateTokens({ token: newToken }));
     return newToken;
   }
   return null;
 }
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError,
+  object,
+  FetchBaseQueryMeta
+> = async (args, api, extraOptions) => {
   // Execute request
-  let result = await rawBaseQuery(args as any, api, extraOptions);
+  let result = await rawBaseQuery(args, api, extraOptions);
 
   // Handle 401 by refreshing once and retrying original request
-  if (result.error && (result.error as any).status === 401) {
+  if (result.error && result.error.status === 401) {
     if (!refreshPromise) {
       refreshPromise = refreshAccessToken(api, extraOptions).finally(() => {
         // allow next refresh attempt
@@ -51,7 +64,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
     const token = await refreshPromise;
     if (token) {
       // Retry original request after successful refresh
-      result = await rawBaseQuery(args as any, api, extraOptions);
+      result = await rawBaseQuery(args, api, extraOptions);
     }
   }
 
@@ -60,7 +73,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
 export const baseApi = createApi({
   reducerPath: 'api',
-  baseQuery: baseQueryWithReauth as any,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Auth', 'Products', 'User', 'Health'],
   // Global cache configuration
   keepUnusedDataFor: 60, // Keep unused data for 60 seconds

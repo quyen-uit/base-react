@@ -52,7 +52,7 @@ export const RegisterPage = () => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       setApiError('');
-      const { confirmPassword, ...registerData } = values;
+      const { confirmPassword: _confirmPassword, ...registerData } = values;
       const response = await register(registerData).unwrap();
       dispatch(setCredentials(response));
       notifications.show({
@@ -61,8 +61,8 @@ export const RegisterPage = () => {
         color: 'green',
       });
       navigate('/dashboard');
-    } catch (error: any) {
-      const message = error?.data?.message || 'Registration failed';
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Registration failed';
       setApiError(message);
       notifications.show({
         title: t('common.error'),

@@ -7,7 +7,7 @@ import { useAppSelector } from '../../app/hooks';
 export const HomePage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAppSelector((state: any) => state.auth);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const features = [
     {

@@ -69,10 +69,11 @@ export const AvatarUploadModal = ({ opened, onClose, currentAvatar }: AvatarUplo
       setPreviewUrl(null);
       setSelectedFile(null);
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to upload avatar';
       notifications.show({
         title: 'Error',
-        message: error?.data?.message || 'Failed to upload avatar',
+        message,
         color: 'red',
         icon: <IconAlertCircle />,
       });
@@ -93,10 +94,11 @@ export const AvatarUploadModal = ({ opened, onClose, currentAvatar }: AvatarUplo
       setPreviewUrl(null);
       setSelectedFile(null);
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to remove avatar';
       notifications.show({
         title: 'Error',
-        message: error?.data?.message || 'Failed to remove avatar',
+        message,
         color: 'red',
         icon: <IconAlertCircle />,
       });

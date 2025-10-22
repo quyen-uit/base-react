@@ -5,7 +5,7 @@ import { useAppSelector } from '../../app/hooks';
 
 export const AdminDashboardPage = () => {
   const { t } = useTranslation();
-  const { user } = useAppSelector((state: any) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
 
   const stats = [
     {

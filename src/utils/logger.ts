@@ -25,7 +25,7 @@ class Logger {
     return LOG_LEVELS[level] >= LOG_LEVELS[this.currentLevel];
   }
 
-  private formatMessage(level: LogLevel, message: string, data?: any): void {
+  private formatMessage(level: LogLevel, message: string, data?: unknown): void {
     if (!this.shouldLog(level)) return;
 
     const timestamp = new Date().toISOString();
@@ -47,19 +47,19 @@ class Logger {
     }
   }
 
-  debug(message: string, data?: any) {
+  debug(message: string, data?: unknown) {
     this.formatMessage('debug', message, data);
   }
 
-  info(message: string, data?: any) {
+  info(message: string, data?: unknown) {
     this.formatMessage('info', message, data);
   }
 
-  warn(message: string, data?: any) {
+  warn(message: string, data?: unknown) {
     this.formatMessage('warn', message, data);
   }
 
-  error(message: string, error?: Error | any) {
+  error(message: string, error?: unknown) {
     this.formatMessage('error', message, error);
 
     // Send to Sentry in production

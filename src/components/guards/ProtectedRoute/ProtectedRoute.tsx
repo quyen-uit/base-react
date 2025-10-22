@@ -7,11 +7,11 @@ import { LoadingSpinner } from '@/components';
 import { useTranslation } from 'react-i18next';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
   allowedRoles?: UserRole[];
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
+export const ProtectedRoute: FC<ProtectedRouteProps> = ({ children, allowedRoles }) => {
   const { t } = useTranslation();
   const { isAuthenticated, user, initialized } = useAppSelector((state) => state.auth);
   const location = useLocation();
@@ -46,3 +46,4 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowe
 
   return <>{children}</>;
 };
+import type { FC, ReactNode } from 'react';

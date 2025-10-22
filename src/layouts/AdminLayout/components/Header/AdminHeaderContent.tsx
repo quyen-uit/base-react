@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface AdminHeaderContentProps {
-  user: any;
+  user: User | null;
   onLogout: () => void;
 }
 
@@ -69,3 +69,4 @@ export const AdminHeaderContent = ({ user, onLogout }: AdminHeaderContentProps) 
     </Group>
   );
 };
+import type { User } from '@/types';

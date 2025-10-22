@@ -51,8 +51,8 @@ export const LoginPage = () => {
         color: 'green',
       });
       navigate('/dashboard');
-    } catch (error: any) {
-      const message = error?.data?.message || t('auth.invalidCredentials');
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || t('auth.invalidCredentials');
       setApiError(message);
       notifications.show({
         title: t('common.error'),

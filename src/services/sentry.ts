@@ -50,7 +50,7 @@ export const initSentry = (config: SentryConfig) => {
 };
 
 // Helper functions for manual error tracking
-export const captureException = (error: Error, context?: Record<string, any>) => {
+export const captureException = (error: Error, context?: Record<string, unknown>) => {
   Sentry.captureException(error, {
     extra: context,
   });
@@ -68,7 +68,7 @@ export const setUser = (user: { id: string; email?: string; username?: string } 
   }
 };
 
-export const addBreadcrumb = (message: string, data?: Record<string, any>) => {
+export const addBreadcrumb = (message: string, data?: Record<string, unknown>) => {
   Sentry.addBreadcrumb({
     message,
     data,

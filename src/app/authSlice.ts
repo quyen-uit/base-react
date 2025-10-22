@@ -22,7 +22,9 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       try {
         localStorage.setItem('user', JSON.stringify(action.payload.user));
-      } catch {}
+      } catch {
+        // ignore persistence errors
+      }
     },
     updateTokens: (state, action: PayloadAction<{ token: string }>) => {
       state.token = action.payload.token;
@@ -33,7 +35,9 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       try {
         localStorage.removeItem('user');
-      } catch {}
+      } catch {
+        // ignore persistence errors
+      }
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;

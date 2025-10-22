@@ -26,7 +26,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Auth'],
     }),
-    getCurrentUser: builder.query<any, void>({
+    getCurrentUser: builder.query<unknown, void>({
       query: () => '/auth/me',
       providesTags: ['Auth'],
     }),

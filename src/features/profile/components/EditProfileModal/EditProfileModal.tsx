@@ -55,10 +55,11 @@ export const EditProfileModal = ({ opened, onClose, profile }: EditProfileModalP
       });
 
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to update profile';
       notifications.show({
         title: 'Error',
-        message: error?.data?.message || 'Failed to update profile',
+        message,
         color: 'red',
       });
     }

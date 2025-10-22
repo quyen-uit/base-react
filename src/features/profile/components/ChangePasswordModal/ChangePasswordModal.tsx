@@ -56,10 +56,11 @@ export const ChangePasswordModal = ({ opened, onClose }: ChangePasswordModalProp
 
       form.reset();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to change password';
       notifications.show({
         title: 'Error',
-        message: error?.data?.message || 'Failed to change password',
+        message,
         color: 'red',
         icon: <IconAlertCircle />,
       });

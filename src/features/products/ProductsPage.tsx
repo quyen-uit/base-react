@@ -44,10 +44,11 @@ export const ProductsPage = () => {
         color: 'green',
       });
       setOpened(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to create product';
       notifications.show({
         title: t('common.error'),
-        message: error?.data?.message || 'Failed to create product',
+        message,
         color: 'red',
       });
     }
@@ -64,10 +65,11 @@ export const ProductsPage = () => {
       });
       setOpened(false);
       setSelectedProduct(undefined);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to update product';
       notifications.show({
         title: t('common.error'),
-        message: error?.data?.message || 'Failed to update product',
+        message,
         color: 'red',
       });
     }
@@ -87,10 +89,11 @@ export const ProductsPage = () => {
             message: t('products.deleteSuccess'),
             color: 'green',
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
+          const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to delete product';
           notifications.show({
             title: t('common.error'),
-            message: error?.data?.message || 'Failed to delete product',
+            message,
             color: 'red',
           });
         }
