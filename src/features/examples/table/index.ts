@@ -1,0 +1,2 @@
+export { MrtTablePage } from './MrtTablePage';
+

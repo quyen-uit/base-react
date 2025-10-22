@@ -6,7 +6,7 @@ import { LoginPage, RegisterPage } from '@/features/auth';
 import { DashboardPage } from '@/features/dashboard';
 import { ProductsPage } from '@/features/products';
 import { ProfilePage } from '@/features/profile';
-import { GalleryPage, TeamPage, ServicesPage } from '@/features/examples';
+import { GalleryPage, TeamPage, ServicesPage, MrtTablePage } from '@/features/examples';
 import { AdminDashboardPage } from '@/features/admin';
 import { AnalyticsPage } from '@/features/analytics';
 import { UsersPage } from '@/features/users';
@@ -65,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: 'examples/services',
         element: <ServicesPage />,
+      },
+      {
+        path: 'examples/table',
+        element: <MrtTablePage />,
       },
     ],
   },

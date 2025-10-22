@@ -48,6 +48,7 @@
     "gallery": "Gallery",
     "team": "Team",
     "services": "Services",
+    "table": "Table",
     "sections": {
       "general": "General",
       "applications": "Applications",
@@ -137,6 +138,10 @@
     "services": {
       "title": "Our Services",
       "description": "Discover what we can do for you"
+    },
+    "table": {
+      "title": "Table Demo",
+      "description": "Mantine React Table with mock user data"
     }
   }
 }

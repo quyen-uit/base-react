@@ -10,6 +10,7 @@ import {
   IconPhoto,
   IconUsers,
   IconBriefcase,
+  IconTable,
 } from '@tabler/icons-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -94,6 +95,16 @@ export const SidebarContent = ({ isAuthenticated, userRole }: SidebarContentProp
             onClick={(e) => {
               e.stopPropagation();
               navigate('/examples/services');
+            }}
+            variant="subtle"
+          />
+          <NavLink
+            label={t('nav.table')}
+            leftSection={<IconTable size={18} stroke={1.5} />}
+            active={location.pathname === '/examples/table'}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/examples/table');
             }}
             variant="subtle"
           />
