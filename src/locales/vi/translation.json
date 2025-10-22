@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Ứng dụng React Claude",
+    "appName": "React Shop",
     "loading": "Đang tải...",
     "error": "Lỗi",
     "success": "Thành công",
@@ -86,7 +86,7 @@
     }
   },
   "home": {
-    "welcome": "Chào mừng đến React Claude App",
+    "welcome": "Chào mừng đến React Shop",
     "subtitle": "Ứng dụng React hiện đại, có khả năng mở rộng với TypeScript và Mantine UI",
     "getStarted": "Bắt đầu",
     "features": {

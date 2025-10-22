@@ -15,7 +15,7 @@ export default defineConfig({
       minify: true,
       inject: {
         data: {
-          title: 'React Claude App',
+          title: 'React Shop',
         },
       },
     }),
@@ -64,7 +64,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Security: Remove sensitive info from bundle
-        banner: '/* React Claude App - Production Build */',
+        banner: '/* React Shop - Production Build */',
         // Improve caching
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],

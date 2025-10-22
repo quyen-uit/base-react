@@ -1,6 +1,6 @@
 # Security Configuration
 
-This document outlines the security measures implemented in the React Claude App.
+This document outlines the security measures implemented in React Shop.
 
 ## Security Headers
 

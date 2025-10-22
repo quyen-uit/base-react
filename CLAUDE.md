@@ -360,7 +360,7 @@ npm run test:run -- src/features/profile/ChangePasswordModal.test.tsx  # Single 
 Required in `.env`:
 ```
 VITE_API_URL=http://localhost:5000/api  # Backend API base URL
-VITE_APP_NAME=React Claude App
+VITE_APP_NAME=React Shop
 ```
 
 ## Testing Philosophy

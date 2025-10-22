@@ -1,4 +1,4 @@
-# React Claude App
+# React Shop
 
 A modern, scalable, and maintainable web application built with React, TypeScript, and Vite. This application includes authentication, role-based access control, admin dashboard, internationalization, and more.
 
@@ -172,7 +172,7 @@ cp .env.example .env
 4. Update `.env` with your configuration:
 ```env
 VITE_API_URL=http://localhost:5000/api
-VITE_APP_NAME=React Claude App
+VITE_APP_NAME=React Shop
 VITE_SENTRY_DSN=
 VITE_SENTRY_ENABLED=false
 VITE_ENV=development

@@ -66,5 +66,5 @@ Object.defineProperty(window, 'localStorage', {
 // Mock environment variables
 vi.mock('import.meta.env', () => ({
   VITE_API_URL: 'http://localhost:5000/api',
-  VITE_APP_NAME: 'React Claude App',
+  VITE_APP_NAME: 'React Shop',
 }));

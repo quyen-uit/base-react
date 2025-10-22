@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "React Claude App",
+    "appName": "React Shop",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -87,7 +87,7 @@
     }
   },
   "home": {
-    "welcome": "Welcome to React Claude App",
+    "welcome": "Welcome to React Shop",
     "subtitle": "A modern, scalable React application with TypeScript and Mantine UI",
     "getStarted": "Get Started",
     "features": {

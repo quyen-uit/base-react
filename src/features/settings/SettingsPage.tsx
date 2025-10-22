@@ -58,7 +58,7 @@ export const SettingsPage = () => {
                 <TextInput
                   label="Application Name"
                   placeholder="My Application"
-                  defaultValue="React Claude App"
+                  defaultValue="React Shop"
                   description="The name of your application"
                 />
 
