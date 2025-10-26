@@ -1,11 +1,15 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeAll, afterAll, vi } from 'vitest';
+import { server } from '@/mocks/server';
 
-// Cleanup after each test
+// MSW server
+beforeAll(() => server.listen());
 afterEach(() => {
+  server.resetHandlers();
   cleanup();
 });
+afterAll(() => server.close());
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {

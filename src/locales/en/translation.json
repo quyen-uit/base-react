@@ -13,7 +13,8 @@
     "actions": "Actions",
     "confirm": "Confirm",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "goHome": "Go to Home"
   },
   "auth": {
     "login": "Login",
@@ -123,6 +124,7 @@
   "errors": {
     "notFound": "Page not found",
     "unauthorized": "You are not authorized to access this page",
+    "noPermission": "You don't have permission to access this page.",
     "serverError": "Server error occurred",
     "networkError": "Network error. Please check your connection."
   },

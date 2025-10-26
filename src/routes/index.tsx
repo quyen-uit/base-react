@@ -1,40 +1,73 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { MainLayout, AdminLayout } from '@/layouts';
 import { ProtectedRoute } from '@/components';
-import { HomePage } from '@/features/home';
-import { LoginPage, RegisterPage } from '@/features/auth';
-import { DashboardPage } from '@/features/dashboard';
-import { ProductsPage } from '@/features/products';
-import { ProfilePage } from '@/features/profile';
-import { GalleryPage, TeamPage, ServicesPage, MrtTablePage } from '@/features/examples';
-import { AdminDashboardPage } from '@/features/admin';
-import { AnalyticsPage } from '@/features/analytics';
-import { UsersPage } from '@/features/users';
-import { SettingsPage } from '@/features/settings';
-import { NotFoundPage } from '@/features/notfound';
+import { ROUTES } from '@/constants';
+import { LoadingSpinner } from '@/components';
+
+const HomePage = lazy(() => import('@/features/home').then((m) => ({ default: m.HomePage })));
+const LoginPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.LoginPage })));
+const RegisterPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.RegisterPage })));
+const DashboardPage = lazy(() => import('@/features/dashboard').then((m) => ({ default: m.DashboardPage })));
+const ProductsPage = lazy(() => import('@/features/products').then((m) => ({ default: m.ProductsPage })));
+const ProfilePage = lazy(() => import('@/features/profile').then((m) => ({ default: m.ProfilePage })));
+const GalleryPage = lazy(() => import('@/features/examples/gallery').then((m) => ({ default: m.GalleryPage })));
+const TeamPage = lazy(() => import('@/features/examples/team').then((m) => ({ default: m.TeamPage })));
+const ServicesPage = lazy(() => import('@/features/examples/services').then((m) => ({ default: m.ServicesPage })));
+const MrtTablePage = lazy(() => import('@/features/examples/table').then((m) => ({ default: m.MrtTablePage })));
+const AdminDashboardPage = lazy(() => import('@/features/admin').then((m) => ({ default: m.AdminDashboardPage })));
+const AnalyticsPage = lazy(() => import('@/features/analytics').then((m) => ({ default: m.AnalyticsPage })));
+const UsersPage = lazy(() => import('@/features/users').then((m) => ({ default: m.UsersPage })));
+const ColorPage = lazy(() => import('@/features/colors/ColorPage'));
+const SettingsPage = lazy(() => import('@/features/settings').then((m) => ({ default: m.SettingsPage })));
+const NotFoundPage = lazy(() => import('@/features/notfound').then((m) => ({ default: m.NotFoundPage })));
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <LoginPage />,
+    path: ROUTES.LOGIN,
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <LoginPage />
+      </Suspense>
+    ),
   },
   {
-    path: '/register',
-    element: <RegisterPage />,
+    path: ROUTES.REGISTER,
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <RegisterPage />
+      </Suspense>
+    ),
   },
   {
-    path: '/',
+    path: ROUTES.HOME,
     element: <MainLayout />,
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <HomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'colors',
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ColorPage />
+            </Suspense>
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'dashboard',
         element: (
           <ProtectedRoute>
-            <DashboardPage />
+            <Suspense fallback={<LoadingSpinner />}>
+              <DashboardPage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -42,7 +75,9 @@ export const router = createBrowserRouter([
         path: 'profile',
         element: (
           <ProtectedRoute>
-            <ProfilePage />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ProfilePage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -50,30 +85,48 @@ export const router = createBrowserRouter([
         path: 'products',
         element: (
           <ProtectedRoute>
-            <ProductsPage />
+            <Suspense fallback={<LoadingSpinner />}>
+              <ProductsPage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
       {
         path: 'examples/gallery',
-        element: <GalleryPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <GalleryPage />
+          </Suspense>
+        ),
       },
       {
         path: 'examples/team',
-        element: <TeamPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <TeamPage />
+          </Suspense>
+        ),
       },
       {
         path: 'examples/services',
-        element: <ServicesPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ServicesPage />
+          </Suspense>
+        ),
       },
       {
         path: 'examples/table',
-        element: <MrtTablePage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <MrtTablePage />
+          </Suspense>
+        ),
       },
     ],
   },
   {
-    path: '/admin',
+    path: ROUTES.ADMIN,
     element: (
       <ProtectedRoute allowedRoles={['admin']}>
         <AdminLayout />
@@ -82,28 +135,60 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AdminDashboardPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AdminDashboardPage />
+          </Suspense>
+        ),
       },
       {
         path: 'analytics',
-        element: <AnalyticsPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <AnalyticsPage />
+          </Suspense>
+        ),
       },
       {
         path: 'products',
-        element: <ProductsPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProductsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'colors',
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <ColorPage />
+          </Suspense>
+        ),
       },
       {
         path: 'users',
-        element: <UsersPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <UsersPage />
+          </Suspense>
+        ),
       },
       {
         path: 'settings',
-        element: <SettingsPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <SettingsPage />
+          </Suspense>
+        ),
       },
     ],
   },
   {
-    path: '*',
-    element: <NotFoundPage />,
+    path: ROUTES.NOT_FOUND,
+    element: (
+      <Suspense fallback={<LoadingSpinner />}>
+        <NotFoundPage />
+      </Suspense>
+    ),
   },
 ]);

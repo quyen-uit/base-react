@@ -4,3 +4,4 @@ export * from './api/profile';
 export * from './api/products';
 export * from './api/health';
 export * from './sentry';
+export * from './api/colors';

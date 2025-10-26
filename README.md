@@ -50,7 +50,7 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 - **react-i18next** - React bindings
 
 ### HTTP Client
-- **Axios** - HTTP requests with interceptors
+- **RTK Query (fetchBaseQuery)** - HTTP with credentials + auth header
 
 ### Code Quality
 - **ESLint** - Linting
@@ -65,7 +65,6 @@ A modern, scalable, and maintainable web application built with React, TypeScrip
 
 ### Security & Monitoring
 - **Sentry** - Error tracking and performance monitoring
-- **axios-retry** - Automatic request retries
 - **Cookie-based Auth** - httpOnly refresh cookie; memory access token
 
 ## Project Structure
@@ -475,6 +474,89 @@ npm install typescript@latest
 3. Commit your changes
 4. Push to the branch
 5. Open a Pull Request
+
+## Project Structure (Updated)
+
+```
+src/
+  app/                        # Redux store configuration
+    store.ts                  # Store setup
+    authSlice.ts              # Auth state slice
+    hooks.ts                  # Typed Redux hooks
+  components/                 # Shared components
+    ui/
+      LoadingSpinner/         # Loading indicator
+      Skeletons/              # Skeleton loading components
+    guards/
+      ProtectedRoute/         # Route protection wrapper
+    errors/
+      ErrorBoundary/          # Error boundary component
+  constants/                  # Application constants
+    api.ts                    # API config & endpoints
+    routes.ts                 # Route constants
+    permissions.ts            # Permission & role constants
+  features/                   # Feature-based modules
+    auth/                     # Authentication pages
+    home/                     # Home page
+    dashboard/                # User dashboard
+    profile/                  # User profile + modals
+    products/                 # Product CRUD
+    examples/                 # Example pages (gallery, team, services, table)
+    admin/                    # Admin dashboard
+    analytics/                # Analytics page
+    users/                    # User management
+    settings/                 # Settings page
+    notfound/                 # 404 page
+    colors/                   # Colors feature
+  hooks/                      # Custom hooks
+  layouts/                    # Layout components
+    MainLayout/               # Main layout + header/sidebar
+    AdminLayout/              # Admin panel layout
+  locales/                    # i18n translations
+    en/                       # English translations
+    vi/                       # Vietnamese translations
+    i18n.ts                   # i18n configuration
+  routes/                     # Router
+    index.tsx                 # Router configuration
+    meta.tsx                  # Route metadata for nav
+  services/                   # API services
+    api/                      # API endpoints by domain
+    baseApi.ts                # RTK Query base API
+    sentry.ts                 # Sentry configuration
+  theme/                      # Mantine theme config
+    index.ts                  # Theme customization
+  types/                      # TypeScript types
+    auth.ts                   # Auth types
+    profile.ts                # Profile types
+    product.ts                # Product types
+    color.ts                  # Color types
+    common.ts                 # Common types
+    index.ts                  # Type exports
+  utils/                      # Utility functions
+    api.ts                    # API error helpers
+    permissions.ts            # Permission utilities
+    logger.ts                 # Logging utility
+  tests/                      # Test configuration
+    setup.ts                  # Test setup (includes MSW)
+    test-utils.tsx            # Testing utilities
+  App.tsx                     # Root component
+  main.tsx                    # Entry point
+```
+
+## MSW Mocking
+
+- Enable mock API in development: set `VITE_ENABLE_MSW=true` in `.env`.
+- When enabled, MSW intercepts requests (e.g., `/api/auth/me`) with default handlers.
+- In tests, MSW server is started automatically in `src/tests/setup.ts`.
+
+## Docker
+
+Build and run a production image served by Nginx:
+
+```
+docker build -t react-shop .
+docker run -p 8080:80 react-shop
+```
 
 ## License
 

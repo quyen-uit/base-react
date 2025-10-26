@@ -11,6 +11,14 @@ export const API_ENDPOINTS = {
     LOGOUT: '/auth/logout',
     REFRESH: '/auth/refresh',
   },
+  COLOR: {
+    GET: (id: string) => `/color/${id}`,
+    SEARCH: '/color/search',
+    CREATE: '/color/create',
+    CREATE_MANY: '/color/create-many',
+    UPDATE: '/color/update',
+    DELETE: (id: string) => `/color/${id}`,
+  },
   PROFILE: {
     GET: '/profile',
     UPDATE: '/profile',

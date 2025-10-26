@@ -74,7 +74,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Auth', 'Products', 'User', 'Health'],
+  tagTypes: ['Auth', 'Products', 'User', 'Health', 'Colors'],
   // Global cache configuration
   keepUnusedDataFor: 60, // Keep unused data for 60 seconds
   refetchOnMountOrArgChange: 30, // Refetch if data is older than 30 seconds

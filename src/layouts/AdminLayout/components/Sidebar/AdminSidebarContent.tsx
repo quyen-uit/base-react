@@ -7,6 +7,7 @@ import {
   IconUsers,
   IconChartBar,
   IconChevronRight,
+  IconPalette,
 } from '@tabler/icons-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -70,6 +71,14 @@ export const AdminSidebarContent = () => {
           rightSection={<IconChevronRight size={14} stroke={1.5} />}
           active={location.pathname === '/admin/products'}
           onClick={() => navigate('/admin/products')}
+          variant="subtle"
+        />
+        <NavLink
+          label={t('nav.colors')}
+          leftSection={<IconPalette size={20} stroke={1.5} />}
+          rightSection={<IconChevronRight size={14} stroke={1.5} />}
+          active={location.pathname === '/admin/colors'}
+          onClick={() => navigate('/admin/colors')}
           variant="subtle"
         />
         <NavLink

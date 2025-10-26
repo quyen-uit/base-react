@@ -1,0 +1,2 @@
+export { ColorPage } from './ColorPage';
+

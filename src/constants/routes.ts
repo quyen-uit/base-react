@@ -5,6 +5,7 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   PROFILE: '/profile',
   PRODUCTS: '/products',
+  COLORS: '/colors',
   ADMIN: '/admin',
   ADMIN_ANALYTICS: '/admin/analytics',
   ADMIN_USERS: '/admin/users',
@@ -18,6 +19,7 @@ export const PROTECTED_ROUTES = [
   ROUTES.DASHBOARD,
   ROUTES.PROFILE,
   ROUTES.PRODUCTS,
+  ROUTES.COLORS,
 ] as const;
 
 export const ADMIN_ROUTES = [

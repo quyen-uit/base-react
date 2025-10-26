@@ -19,6 +19,7 @@ import { notifications } from '@mantine/notifications';
 import { useAppDispatch } from '../../app/hooks';
 import { setCredentials } from '../../app/authSlice';
 import { useLoginMutation } from '@/services';
+import { getApiMessage } from '@/utils/api';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -52,7 +53,7 @@ export const LoginPage = () => {
       });
       navigate('/dashboard');
     } catch (error: unknown) {
-      const message = (error as { data?: { message?: string } })?.data?.message || t('auth.invalidCredentials');
+      const message = getApiMessage(error, t('auth.invalidCredentials'));
       setApiError(message);
       notifications.show({
         title: t('common.error'),

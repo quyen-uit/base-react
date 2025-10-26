@@ -13,7 +13,8 @@
     "actions": "Hành động",
     "confirm": "Xác nhận",
     "yes": "Có",
-    "no": "Không"
+    "no": "Không",
+    "goHome": "Về trang chủ"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -48,6 +49,7 @@
     "gallery": "Thư viện ảnh",
     "team": "Đội ngũ",
     "services": "Dịch vụ",
+    "table": "Bảng",
     "sections": {
       "general": "Chung",
       "applications": "Ứng dụng",
@@ -87,7 +89,7 @@
   },
   "home": {
     "welcome": "Chào mừng đến React Shop",
-    "subtitle": "Ứng dụng React hiện đại, có khả năng mở rộng với TypeScript và Mantine UI",
+    "subtitle": "Ứng dụng React hiện đại, mở rộng với TypeScript và Mantine UI",
     "getStarted": "Bắt đầu",
     "features": {
       "title": "Tính năng",
@@ -121,22 +123,27 @@
   },
   "errors": {
     "notFound": "Không tìm thấy trang",
-    "unauthorized": "Bạn không có quyền truy cập trang này",
-    "serverError": "Lỗi máy chủ",
+    "unauthorized": "Bạn không được phép truy cập trang này",
+    "noPermission": "Bạn không có quyền truy cập trang này.",
+    "serverError": "Đã xảy ra lỗi máy chủ",
     "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối."
   },
   "examples": {
     "gallery": {
       "title": "Thư viện ảnh",
-      "description": "Khám phá bộ sưu tập hình ảnh đẹp của chúng tôi"
+      "description": "Khám phá bộ sưu tập hình ảnh đẹp"
     },
     "team": {
       "title": "Đội ngũ của chúng tôi",
-      "description": "Gặp gỡ những người tài năng đằng sau thành công của chúng tôi"
+      "description": "Gặp gỡ những người tài năng đứng sau thành công"
     },
     "services": {
       "title": "Dịch vụ của chúng tôi",
       "description": "Khám phá những gì chúng tôi có thể làm cho bạn"
+    },
+    "table": {
+      "title": "Minh họa Bảng",
+      "description": "Mantine React Table với dữ liệu mẫu"
     }
   }
 }
